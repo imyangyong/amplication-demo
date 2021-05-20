@@ -1,21 +1,21 @@
-import { DocumentBuilder } from "@nestjs/swagger";
+import { DocumentBuilder } from '@nestjs/swagger'
 
-export const swaggerPath = "api";
+export const swaggerPath = 'api'
 
 export const swaggerDocumentOptions = new DocumentBuilder()
-  .setTitle("node-bff-test")
+  .setTitle('ued-bff')
   .setDescription(
     '\n\n## Congratulations! Your application is ready.\n\nPlease note that all endpoints are secured with HTTP basic authentication.\nBy default, your app comes with one user with the username "admin" and password "admin".\nLearn more in [our docs](https://docs.amplication.com)'
   )
-  .setVersion("wxmsm4te")
+  .setVersion('wxmsm4te')
   .addBasicAuth()
-  .build();
+  .build()
 
 export const swaggerSetupOptions = {
   swaggerOptions: {
-    persistAuthorization: true,
+    persistAuthorization: true
   },
-  customCssUrl: "../swagger/swagger.css",
-  customfavIcon: "../swagger/favicon.png",
-  customSiteTitle: "node-bff-test",
-};
+  customCssUrl: '../swagger/swagger.css',
+  customfavIcon: '../swagger/favicon.png',
+  customSiteTitle: 'ued-bff'
+}

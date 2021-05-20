@@ -1,5 +1,5 @@
 {
-  "name": "node-bff-test-server",
+  "name": "ued-bff",
   "private": true,
   "scripts": {
     "start": "nest start",
