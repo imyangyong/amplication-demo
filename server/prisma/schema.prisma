@@ -1,10 +1,17 @@
-datasource postgres {
-  provider = "postgresql"
-  url      = env("POSTGRESQL_URL")
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
+}
+
+model Role {
+  id    String @id @default(cuid())
+  name  String
+  role  String @unique
+  users User[]
 }
 
 model User {
@@ -14,10 +21,11 @@ model User {
   lastName  String?
   password  String
   projects  Project[]
-  roles     String[]
   tasks     Task[]
   updatedAt DateTime  @updatedAt
   username  String    @unique
+  roleId    String
+  role      Role      @relation(fields: [roleId], references: [id])
 }
 
 model Project {
