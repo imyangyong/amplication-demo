@@ -2,24 +2,24 @@
  * Clean all the tables and types created by Prisma in the database
  */
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
 if (require.main === module) {
   clean().catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    console.error(error)
+    process.exit(1)
+  })
 }
 
 async function clean() {
-  console.info("Dropping all tables in the database...");
-  const prisma = new PrismaClient();
-  const tables = await getTables(prisma);
-  const types = await getTypes(prisma);
-  await dropTables(prisma, tables);
-  await dropTypes(prisma, types);
-  console.info("Cleaned database successfully");
-  await prisma.$disconnect();
+  console.info('Dropping all tables in the database...')
+  const prisma = new PrismaClient()
+  const tables = await getTables(prisma)
+  // const types = await getTypes(prisma)
+  await dropTables(prisma, tables)
+  // await dropTypes(prisma, types)
+  console.info('Cleaned database successfully')
+  await prisma.$disconnect()
 }
 
 async function dropTables(
@@ -27,31 +27,32 @@ async function dropTables(
   tables: string[]
 ): Promise<void> {
   for (const table of tables) {
-    await prisma.$executeRaw(`DROP TABLE public."${table}" CASCADE;`);
+    await prisma.$executeRaw(`SET FOREIGN_KEY_CHECKS=0;`)
+    await prisma.$executeRaw(`DROP TABLE ${table};`)
   }
 }
 
 async function dropTypes(prisma: PrismaClient, types: string[]) {
   for (const type of types) {
-    await prisma.$executeRaw(`DROP TYPE IF EXISTS "${type}" CASCADE;`);
+    await prisma.$executeRaw(`DROP TYPE IF EXISTS "${type}" CASCADE;`)
   }
 }
 
 async function getTables(prisma: PrismaClient): Promise<string[]> {
   const results: Array<{
-    tablename: string;
-  }> = await prisma.$queryRaw`SELECT tablename from pg_tables where schemaname = 'public';`;
-  return results.map((result) => result.tablename);
+    table_name: string
+  }> = await prisma.$queryRaw`SELECT table_name from information_schema.tables where table_schema = 'prisma_db';`
+  return results.map((result) => result.table_name)
 }
 
 async function getTypes(prisma: PrismaClient): Promise<string[]> {
   const results: Array<{
-    typname: string;
+    typname: string
   }> = await prisma.$queryRaw`
 SELECT t.typname
-FROM pg_type t 
+FROM pg_type t
 JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
 WHERE n.nspname = 'public';
-`;
-  return results.map((result) => result.typname);
+`
+  return results.map((result) => result.typname)
 }
