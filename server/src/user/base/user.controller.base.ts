@@ -74,6 +74,7 @@ export class UserControllerBase {
   @common.UseInterceptors(nestMorgan.MorganInterceptor('combined'))
   @common.UseGuards(basicAuthGuard.BasicAuthGuard, nestAccessControl.ACGuard)
   @common.Get()
+  // 这一步, 通过grants.json列表来检测: 通过守卫获取的角色[]是否有以下权限,否则 403
   @nestAccessControl.UseRoles({
     resource: 'User',
     action: 'read',

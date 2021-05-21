@@ -21,7 +21,8 @@ export class AuthService {
     })
     if (user && (await this.passwordService.compare(password, user.password))) {
       const { role } = user
-      return { username, role }
+      // 添加 roles 是为了配合 ACL 权限列表, 必要有的字段
+      return { username, role, roles: [role] }
     }
     return null
   }
