@@ -1,50 +1,50 @@
-import { InputType, Field } from "@nestjs/graphql";
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional } from "class-validator";
+import { InputType, Field } from '@nestjs/graphql'
+import { ApiProperty } from '@nestjs/swagger'
+import { IsString, IsOptional } from 'class-validator'
 @InputType()
 class UserCreateInput {
   @ApiProperty({
     required: false,
-    type: String,
+    type: String
   })
   @IsString()
   @IsOptional()
   @Field(() => String, {
-    nullable: true,
+    nullable: true
   })
-  firstName?: string | null;
+  firstName?: string | null
   @ApiProperty({
     required: false,
-    type: String,
+    type: String
   })
   @IsString()
   @IsOptional()
   @Field(() => String, {
-    nullable: true,
+    nullable: true
   })
-  lastName?: string | null;
+  lastName?: string | null
   @ApiProperty({
     required: true,
-    type: String,
+    type: String
   })
   @IsString()
   @Field(() => String)
-  password!: string;
+  password!: string
   @ApiProperty({
     required: true,
-    type: [String],
+    type: [String]
   })
   @IsString({
-    each: true,
+    each: true
   })
-  @Field(() => [String])
-  roles!: Array<string>;
+  @Field(() => String)
+  role!: string
   @ApiProperty({
     required: true,
-    type: String,
+    type: String
   })
   @IsString()
   @Field(() => String)
-  username!: string;
+  username!: string
 }
-export { UserCreateInput };
+export { UserCreateInput }

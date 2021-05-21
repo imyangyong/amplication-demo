@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { PasswordService } from "./password.service";
+import { Injectable } from '@nestjs/common'
+import { PasswordService } from './password.service'
 // @ts-ignore
 // eslint-disable-next-line
-import { UserService } from "../user/user.service";
-import { UserInfo } from "./UserInfo";
+import { UserService } from '../user/user.service'
+import { UserInfo } from './UserInfo'
 
 @Injectable()
 export class AuthService {
@@ -16,13 +16,13 @@ export class AuthService {
     username: string,
     password: string
   ): Promise<UserInfo | null> {
-    const user = await this.userService.findOne({
-      where: { username },
-    });
+    const user = await this.userService.findUnique({
+      where: { username }
+    })
     if (user && (await this.passwordService.compare(password, user.password))) {
-      const { roles } = user;
-      return { username, roles };
+      const { role } = user
+      return { username, role }
     }
-    return null;
+    return null
   }
 }

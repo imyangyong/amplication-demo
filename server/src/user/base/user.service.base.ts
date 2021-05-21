@@ -1,7 +1,7 @@
-import { PrismaService } from "nestjs-prisma";
-import { Prisma, User, Project, Task } from "@prisma/client";
-import { PasswordService } from "../../auth/password.service";
-import { transformStringFieldUpdateInput } from "../../prisma.util";
+import { PrismaService } from 'nestjs-prisma'
+import { Prisma, User, Project, Task, Role } from '@prisma/client'
+import { PasswordService } from '../../auth/password.service'
+import { transformStringFieldUpdateInput } from '../../prisma.util'
 
 export class UserServiceBase {
   constructor(
@@ -12,12 +12,12 @@ export class UserServiceBase {
   async findMany<T extends Prisma.UserFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.UserFindManyArgs>
   ): Promise<User[]> {
-    return this.prisma.user.findMany(args);
+    return this.prisma.user.findMany(args)
   }
-  async findOne<T extends Prisma.UserFindUniqueArgs>(
+  async findUnique<T extends Prisma.UserFindUniqueArgs>(
     args: Prisma.SelectSubset<T, Prisma.UserFindUniqueArgs>
   ): Promise<User | null> {
-    return this.prisma.user.findUnique(args);
+    return this.prisma.user.findUnique(args)
   }
   async create<T extends Prisma.UserCreateArgs>(
     args: Prisma.SelectSubset<T, Prisma.UserCreateArgs>
@@ -27,9 +27,9 @@ export class UserServiceBase {
 
       data: {
         ...args.data,
-        password: await this.passwordService.hash(args.data.password),
-      },
-    });
+        password: await this.passwordService.hash(args.data.password)
+      }
+    })
   }
   async update<T extends Prisma.UserUpdateArgs>(
     args: Prisma.SelectSubset<T, Prisma.UserUpdateArgs>
@@ -45,14 +45,14 @@ export class UserServiceBase {
           (await transformStringFieldUpdateInput(
             args.data.password,
             (password) => this.passwordService.hash(password)
-          )),
-      },
-    });
+          ))
+      }
+    })
   }
   async delete<T extends Prisma.UserDeleteArgs>(
     args: Prisma.SelectSubset<T, Prisma.UserDeleteArgs>
   ): Promise<User> {
-    return this.prisma.user.delete(args);
+    return this.prisma.user.delete(args)
   }
 
   async findProjects(
@@ -61,9 +61,9 @@ export class UserServiceBase {
   ): Promise<Project[]> {
     return this.prisma.user
       .findUnique({
-        where: { id: parentId },
+        where: { id: parentId }
       })
-      .projects(args);
+      .projects(args)
   }
 
   async findTasks(
@@ -72,8 +72,8 @@ export class UserServiceBase {
   ): Promise<Task[]> {
     return this.prisma.user
       .findUnique({
-        where: { id: parentId },
+        where: { id: parentId }
       })
-      .tasks(args);
+      .tasks(args)
   }
 }
