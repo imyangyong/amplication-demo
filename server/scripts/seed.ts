@@ -27,7 +27,7 @@ async function seed(bcryptSalt: Salt) {
   const data = {
     username: 'admin',
     password: await hash('admin', bcryptSalt),
-    role: {
+    userRole: {
       create: {
         role: 'admin',
         name: '管理员'
@@ -43,7 +43,7 @@ async function seed(bcryptSalt: Salt) {
   const data2 = {
     username: 'yangyong',
     password: await hash('yangyong', bcryptSalt),
-    role: {
+    userRole: {
       create: {
         role: 'user',
         name: '普通用户'

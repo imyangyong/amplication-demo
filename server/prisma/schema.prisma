@@ -8,9 +8,8 @@ generator client {
 }
 
 model Role {
-  id    String @id @default(cuid())
+  role  String @id
   name  String
-  role  String @unique
   users User[]
 }
 
@@ -24,8 +23,8 @@ model User {
   tasks     Task[]
   updatedAt DateTime  @updatedAt
   username  String    @unique
-  roleId    String
-  role      Role      @relation(fields: [roleId], references: [id])
+  role      String
+  userRole  Role      @relation(fields: [role], references: [role])
 }
 
 model Project {
