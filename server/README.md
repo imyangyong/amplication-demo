@@ -53,7 +53,3 @@ npm run db:init
 ```
 npm start
 ```
-
-## Learn more
-
-You can learn more in the [Amplication documentation](https://docs.amplication.com/guides/getting-started).
