@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Role {
@@ -19,12 +19,14 @@ model User {
   id        String    @id @default(cuid())
   lastName  String?
   password  String
-  projects  Project[]
-  tasks     Task[]
   updatedAt DateTime  @updatedAt
   username  String    @unique
   role      String
   userRole  Role      @relation(fields: [role], references: [role])
+  projects  Project[]
+  tasks     Task[]
+
+  @@index([role], name: "role")
 }
 
 model Project {
@@ -33,25 +35,30 @@ model Project {
   dueDate     DateTime?
   id          String    @id @default(cuid())
   name        String
-  owner       User      @relation(fields: [ownerId], references: [id])
   ownerId     String
   startDate   DateTime?
-  tasks       Task[]
   updatedAt   DateTime  @updatedAt
+  owner       User      @relation(fields: [ownerId], references: [id])
+  tasks       Task[]
+
+  @@index([ownerId], name: "ownerId")
 }
 
 model Task {
-  assignedTo     User?           @relation(fields: [assignedToId], references: [id])
   assignedToId   String?
   createdAt      DateTime        @default(now())
   estimationDays Int?
   id             String          @id @default(cuid())
-  project        Project?        @relation(fields: [projectId], references: [id])
   projectId      String?
   startDate      DateTime?
   status         EnumTaskStatus?
   title          String
   updatedAt      DateTime        @updatedAt
+  assignedTo     User?           @relation(fields: [assignedToId], references: [id])
+  project        Project?        @relation(fields: [projectId], references: [id])
+
+  @@index([assignedToId], name: "assignedToId")
+  @@index([projectId], name: "projectId")
 }
 
 enum EnumTaskStatus {
